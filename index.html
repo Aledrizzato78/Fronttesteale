@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Item no Banco de Dados</title>
+</head>
+<body>
+    <h1>Consultar Item</h1>
+    <form id="queryItemForm" action="/consultar-item" method="post">
+        <label for="column">Nome da Coluna:</label>
+        <input type="text" id="column" name="column">
+        <label for="row">ID da Linha:</label>
+        <input type="text" id="row" name="row">
+        <button type="submit">Consultar Item</button>
+    </form>
+
+    <div id="result"></div>
+    <div id="error"></div>
+
+    <script>
+        document.getElementById('queryItemForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('/consultar-item', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('result').innerText = 'Valor do item: ' + data.itemValue;
+                    document.getElementById('error').innerText = '';
+                } else {
+                    document.getElementById('result').innerText = '';
+                    document.getElementById('error').innerText = 'Erro ao consultar item: ' + data.error;
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                document.getElementById('result').innerText = '';
+                document.getElementById('error').innerText = 'Erro ao consultar item.';
+            });
+        });
+    </script>
+</body>
+</html>
+
