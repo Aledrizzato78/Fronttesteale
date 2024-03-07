@@ -4,19 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Item no Banco de Dados</title>
+    <style>
+        body {
+            background-image: url('fund.jpg'); /* /home/alexandre/arms/fund.jpg */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #queryItemForm {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #queryItemForm label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        #queryItemForm input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #queryItemForm button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #result, #error {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Consultar Item</h1>
-    <form id="queryItemForm" action="/consultar-item" method="post">
-        <label for="column">Nome da Coluna:</label>
-        <input type="text" id="column" name="column">
-        <label for="row">ID da Linha:</label>
-        <input type="text" id="row" name="row">
-        <button type="submit">Consultar Item</button>
-    </form>
+    <div id="container">
+        <h1>Consultar Item</h1>
+        <form id="queryItemForm" action="/consultar-item" method="post">
+            <label for="column">Nome da Coluna:</label>
+            <input type="text" id="column" name="column">
+            <label for="row">ID da Linha:</label>
+            <input type="text" id="row" name="row">
+            <button type="submit">Consultar Item</button>
+        </form>
 
-    <div id="result"></div>
-    <div id="error"></div>
+        <div id="result"></div>
+        <div id="error"></div>
+    </div>
 
     <script>
         document.getElementById('queryItemForm').addEventListener('submit', function(event) {
@@ -47,4 +96,3 @@
     </script>
 </body>
 </html>
-
