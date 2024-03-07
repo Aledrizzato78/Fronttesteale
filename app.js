@@ -14,6 +14,13 @@ db.serialize(() => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(express.static('public')); // Servir arquivos estáticos do diretório 'public'
+
+// Middleware para lidar com a solicitação GET para o arquivo favicon.ico
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).send();
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -33,11 +40,10 @@ app.post('/adicionar-item', (req, res) => {
     });
 });
 
-app.post('/consultar-item', (req, res) => {
-    const column = req.body.column;
-    const row = req.body.row;
+app.get('/consultar-item', (req, res) => {
+    const row = req.query.row;
 
-    const sql = `SELECT ${column} FROM itens WHERE id = ?`;
+    const sql = `SELECT * FROM itens WHERE id = ?`;
 
     db.get(sql, [row], (err, row) => {
         if (err) {
@@ -47,12 +53,12 @@ app.post('/consultar-item', (req, res) => {
         }
 
         if (!row) {
-            console.error('Item não encontrado para coluna:', column, 'e linha:', row);
+            console.error('Item não encontrado para id:', row);
             res.status(404).json({ success: false, error: "Item não encontrado." });
             return;
         }
 
-        const itemValue = row[column];
+        const itemValue = row.nome; // Alterado para acessar o campo 'nome'
         console.log('Valor do item:', itemValue);
         res.status(200).json({ success: true, itemValue: itemValue });
     });
@@ -61,4 +67,3 @@ app.post('/consultar-item', (req, res) => {
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
-
